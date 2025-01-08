@@ -5,19 +5,19 @@
             <div class="navbar-brand-box">
                 <a href="<?= base_url('beranda') ?>" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="<?= base_url('assets/images/logo-sm.png') ?>" alt="" height="22">
+                        <img src="<?= base_url('assets/images/Logo Klas-A.png') ?>" alt="" height="50">
                     </span>
                     <span class="logo-lg">
-                        <img src="<?= base_url('assets/images/logo-dark.png') ?>" alt="" height="17">
+                        <img src="<?= base_url('assets/images/Logo Klas-A.png') ?>" alt="" height="50">
                     </span>
                 </a>
 
                 <a href="<?= base_url('beranda') ?>" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="<?= base_url('assets/images/logo-sm.png') ?>" alt="" height="22">
+                        <img src="<?= base_url('assets/images/Logo Klas-A.png') ?>" alt="" height="50">
                     </span>
                     <span class="logo-lg">
-                        <img src="<?= base_url('assets/images/logo-light.png') ?>" alt="" height="18">
+                        <img src="<?= base_url('assets/images/Logo Klas-A.png') ?>" alt="" height="70">
                     </span>
                 </a>
             </div>

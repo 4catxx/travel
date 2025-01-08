@@ -140,6 +140,6 @@ input[disabled]:focus {
 </div>
 <?= $this->include('partials/right-sidebar') ?>
 <?= $this->include('partials/vendor-scripts') ?>
-<script src="<?= base_url('/assets/js/app.js'); ?>"></script>
+<script src="/assets/js/app.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use App\Models\BookingModel;
 use App\Models\WisataModel;
+use App\Models\RencanaPerjalananModel;
 
 class AdminController extends BaseController
 {
@@ -11,6 +12,7 @@ class AdminController extends BaseController
     protected $userModel;
     protected $bookingModel;
     protected $wisataModel;
+    protected $rencanaPerjalananModel;
 
     public function __construct()
     {
@@ -18,6 +20,7 @@ class AdminController extends BaseController
         $this->userModel = new UserModel();
         $this->bookingModel = new BookingModel();
         $this->wisataModel = new WisataModel();
+        $this->rencanaPerjalananModel = new RencanaPerjalananModel();
     }
 
     public function show_akun_aktif()
@@ -54,52 +57,77 @@ class AdminController extends BaseController
     }
 
     public function post_wisata()
-    {
-        // Validasi input
-        $validation = \Config\Services::validation();
-        $validation->setRules([
-            'nama_paket' => 'required|min_length[3]',
-            'deskripsi' => 'required',
-            'min' => 'required|numeric',
-            'harga' => 'required|numeric',
-            'waktu_perjalanan' => 'required|numeric',
-            'rute_perjalanan' => 'required',
-            'gambar' => 'uploaded[gambar]|is_image[gambar]|max_size[gambar,2048]|mime_in[gambar,image/jpg,image/jpeg,image/png]'
-        ]);
+{
+    // Validasi input
+    $validation = \Config\Services::validation();
+    $validation->setRules([
+        'nama_paket' => 'required|min_length[3]',
+        'deskripsi' => 'required',
+        'min' => 'required|numeric',
+        'harga' => 'required|numeric',
+        'waktu_perjalanan' => 'required|numeric',
+        'gambar' => 'uploaded[gambar]|is_image[gambar]|max_size[gambar,2048]|mime_in[gambar,image/jpg,image/jpeg,image/png]',
+    ]);
 
-        if (!$this->validate($validation->getRules())) {
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-        }
+    if (!$this->validate($validation->getRules())) {
+        return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+    }
 
-        // Handle upload gambar
-        $fileGambar = $this->request->getFile('gambar');
-        if ($fileGambar->isValid() && !$fileGambar->hasMoved()) {
-            $gambarName = $fileGambar->getRandomName();
-            $fileGambar->move('uploads/wisata/', $gambarName);
-        } else {
-            return redirect()->back()->with('error', 'Gagal mengunggah gambar.');
-        }
+    // Handle upload gambar
+    $fileGambar = $this->request->getFile('gambar');
+    if ($fileGambar->isValid() && !$fileGambar->hasMoved()) {
+        $gambarName = $fileGambar->getRandomName();
+        $fileGambar->move('uploads/wisata/', $gambarName);
+    } else {
+        return redirect()->back()->with('error', 'Gagal mengunggah gambar.');
+    }
 
-        // Ambil data dari form
-        $data = [
-            'nama_wisata' => $this->request->getPost('nama_paket'),
-            'deskripsi' => $this->request->getPost('deskripsi'),
-            'minimum_orang' => $this->request->getPost('min'),
-            'harga' => $this->request->getPost('harga'),
-            'waktu_perjalanan' => $this->request->getPost('waktu_perjalanan'),
-            'rute_perjalanan' => $this->request->getPost('rute_perjalanan'),
-            'created_by' => $this->session->get('id_user'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'gambar' => $gambarName
-        ];
+    // Ambil data dari form
+    $data = [
+        'nama_wisata' => $this->request->getPost('nama_paket'),
+        'deskripsi' => $this->request->getPost('deskripsi'),
+        'minimum_orang' => $this->request->getPost('min'),
+        'harga' => $this->request->getPost('harga'),
+        'waktu_perjalanan' => $this->request->getPost('waktu_perjalanan'),
+        'created_by' => $this->session->get('id_user'),
+        'created_at' => date('Y-m-d H:i:s'),
+        'gambar' => $gambarName,
+    ];
 
-        // Simpan data ke database
-        if ($this->wisataModel->insert($data)) {
-            return redirect()->to('informasi-wisata')->with('success', 'Data wisata berhasil ditambahkan.');
-        } else {
-            return redirect()->back()->with('error', 'Gagal menyimpan data wisata.');
+    // Simpan data wisata dan ambil ID yang baru disimpan
+    $this->wisataModel->insert($data);
+    $wisataId = $this->wisataModel->getInsertID();  // Ambil ID yang baru saja disimpan
+
+    if (!$wisataId) {
+        return redirect()->back()->with('error', 'Gagal menyimpan data wisata.');
+    }
+
+    // Mengambil rencana perjalanan yang dinamis
+    $jumlahHari = $this->request->getPost('waktu_perjalanan');
+    
+    for ($i = 1; $i <= $jumlahHari; $i++) {
+        $waktuHari = $this->request->getPost("waktu_hari_{$i}[]");
+        $kegiatanHari = $this->request->getPost("kegiatan_hari_{$i}[]");
+
+        // Simpan rencana perjalanan per hari
+        foreach ($waktuHari as $key => $waktu) {
+            $rencanaData = [
+                'id_wisata' => $wisataId,  // ID wisata yang baru saja disimpan
+                'hari' => $i,
+                'waktu' => $waktu,
+                'kegiatan' => $kegiatanHari[$key],
+            ];
+
+            // Simpan ke tabel rencana perjalanan
+            if (!$this->rencanaPerjalananModel->insert($rencanaData)) {
+                return redirect()->back()->with('error', 'Gagal menyimpan rencana perjalanan.');
+            }
         }
     }
+
+    // Berhasil menyimpan semua data
+    return redirect()->to('informasi-wisata')->with('success', 'Data wisata berhasil ditambahkan.');
+}
 
     public function show_edit_wisata($id_wisata)
     {
@@ -149,23 +177,34 @@ class AdminController extends BaseController
     }
 
     public function show_informasi_wisata()
-    {
-        // Ambil semua data dari tabel wisata
-        $wisataData = $this->wisataModel->findAll();
+{
+    // Ambil semua data dari tabel wisata
+    $wisataData = $this->wisataModel->findAll();
 
-        // Kirim data ke view
-        $data = [
-            'title_meta' => view('partials/title-meta', ['title' => 'Informasi Wisata']),
-            'page_title' => view('partials/page-title', ['title' => 'Informasi Wisata', 'pagetitle' => 'Wisata']),
-            'nama' => $this->session->get('nama'),
-            'wisata' => $wisataData,
-        ];
-
-        return view('admin/informasi-wisata', $data);
+    // Ambil rencana perjalanan yang terkait dengan setiap wisata
+    $rencanaPerjalananData = [];
+    foreach ($wisataData as $wisata) {
+        $rencanaPerjalananData[$wisata['id_wisata']] = $this->rencanaPerjalananModel
+            ->where('id_wisata', $wisata['id_wisata'])
+            ->orderBy('hari', 'ASC')
+            ->findAll();
     }
+
+    // Kirim data ke view
+    $data = [
+        'title_meta' => view('partials/title-meta', ['title' => 'Informasi Wisata']),
+        'page_title' => view('partials/page-title', ['title' => 'Informasi Wisata', 'pagetitle' => 'Wisata']),
+        'nama' => $this->session->get('nama'),
+        'wisata' => $wisataData,
+        'rencana_perjalanan' => $rencanaPerjalananData,  // Data rencana perjalanan per wisata
+    ];
+
+    return view('admin/informasi-wisata', $data);
+}
+
     
 
-    public function show_detail_paket($id_wisata)
+public function show_detail_paket($id_wisata)
 {
     // Fetch wisata data by ID
     $wisata = $this->wisataModel->find($id_wisata);
@@ -175,14 +214,24 @@ class AdminController extends BaseController
         return redirect()->to('informasi-wisata')->with('error', 'Paket wisata tidak ditemukan');
     }
 
+    // Fetch rencana perjalanan data based on wisata ID
+    $rencanaPerjalanan = $this->rencanaPerjalananModel
+        ->where('id_wisata', $id_wisata)
+        ->orderBy('hari', 'ASC')
+        ->findAll();
+
+    // Prepare data to be passed to view
     $data = [
         'title_meta' => view('partials/title-meta', ['title' => 'Detail Paket Wisata']),
         'page_title' => view('partials/page-title', ['title' => 'Detail Paket Wisata', 'pagetitle' => 'Paket Wisata']),
         'nama' => $this->session->get('nama'),
-        'wisata' => $wisata // Pass wisata data to view
+        'wisata' => $wisata, // Pass wisata data to view
+        'rencana_perjalanan' => $rencanaPerjalanan // Pass rencana perjalanan to view
     ];
+
     return view('Admin/detail-paket', $data);
 }
+
 
 public function post_ubah_status()
 {

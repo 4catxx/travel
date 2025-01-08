@@ -37,34 +37,47 @@
                         </div>  
 
                         <!-- Cards -->  
-                        <div class="row" id="card-container">  
-                            <?php if (!empty($wisata)) : ?>  
-                                <?php foreach ($wisata as $item) : ?>  
-                                    <div class="col-md-4 mb-4" data-status="<?= esc($item['status']) ?>">  
-                                        <div class="card shadow-sm border-0">  
-                                            <img src="<?= base_url('uploads/wisata/' . esc($item['gambar'])) ?>" class="card-img-top rounded-top" alt="<?= esc($item['nama_wisata']) ?>">  
-                                            <div class="card-body">  
-                                                <h5 class="card-title text-primary"><?= esc($item['nama_wisata']) ?></h5>  
-                                                <p class="card-price mb-2"><strong>Rp <?= number_format($item['harga'], 0, ',', '.') ?></strong></p>  
-                                                <div class="card-location text-muted small">  
-                                                    <?= htmlspecialchars_decode($item['deskripsi']) ?>  
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center">  
-                                                    <span class="badge <?= $item['status'] === 'Aktif' ? 'bg-success' : 'bg-danger' ?>">  
-                                                        <?= esc($item['status']) ?>  
-                                                    </span>  
-                                                    <a href="<?= site_url('detail-paket/' . $item['id_wisata']) ?>" class="btn btn-sm btn-outline-primary">View Details</a>  
-                                                </div>  
-                                            </div>  
-                                        </div>  
-                                    </div>  
-                                <?php endforeach; ?>  
-                            <?php else : ?>  
-                                <div class="col-12">  
-                                    <p class="text-muted text-center">Tidak ada data wisata.</p>  
-                                </div>  
-                            <?php endif; ?>  
-                        </div>  
+                        <div class="row" id="card-container">
+    <?php if (!empty($wisata)) : ?>
+        <?php foreach ($wisata as $item) : ?>
+            <div class="col-md-4 mb-4" data-status="<?= esc($item['status']) ?>">
+                <div class="card shadow-sm border-0">
+                    <img src="<?= base_url('uploads/wisata/' . esc($item['gambar'])) ?>" class="card-img-top rounded-top" alt="<?= esc($item['nama_wisata']) ?>">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary"><?= esc($item['nama_wisata']) ?></h5>
+                        <p class="card-price mb-2"><strong>Rp <?= number_format($item['harga'], 0, ',', '.') ?></strong></p>
+                        <div class="card-location text-muted small">
+                            <?= htmlspecialchars_decode($item['deskripsi']) ?>
+                        </div>
+
+                        <!-- Menampilkan rencana perjalanan -->
+                        <?php if (isset($rencana_perjalanan[$item['id_wisata']])) : ?>
+                            <ul class="list-group list-group-flush mt-3">
+                                <?php foreach ($rencana_perjalanan[$item['id_wisata']] as $rencana) : ?>
+                                    <li class="list-group-item">
+                                        <strong>Hari <?= esc($rencana['hari']) ?>:</strong> <?= esc($rencana['waktu']) ?> - <?= esc($rencana['kegiatan']) ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="badge <?= $item['status'] === 'Aktif' ? 'bg-success' : 'bg-danger' ?>">
+                                <?= esc($item['status']) ?>
+                            </span>
+                            <a href="<?= site_url('detail-paket/' . $item['id_wisata']) ?>" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <div class="col-12">
+            <p class="text-muted text-center">Tidak ada data wisata.</p>
+        </div>
+    <?php endif; ?>
+</div>
+
                     </div>  
                 </div>  
 

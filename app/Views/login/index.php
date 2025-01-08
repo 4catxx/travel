@@ -24,13 +24,13 @@
                             <div class="text-center mt-4">
                             <a href="/" class="logo logo-dark">
                                         <span class="logo-lg">
-                                            <img src="assets/images/logo-dark.png" alt="" height="17">
+                                            <img src="assets/images/Logo Klas-A.png" alt="" height="150">
                                         </span>
                                     </a>
                     
                                     <a href="/" class="logo logo-light">
                                         <span class="logo-lg">
-                                            <img src="assets/images/logo-light.png" alt="" height="18">
+                                            <img src="assets/images/Logo Klas-A.png" alt="" height="150">
                                         </span>
                                     </a>
                             </div>

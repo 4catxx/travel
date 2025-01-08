@@ -43,7 +43,7 @@
                             <div class="text-center mt-4">
                                 <a href="<?= base_url() ?>" class="logo logo-dark">
                                     <span class="logo-lg">
-                                        <img src="<?= base_url('assets/images/logo-dark.png') ?>" alt="logo" height="17">
+                                        <img src="<?= base_url('assets/images/Logo Klas-A.png') ?>" alt="logo" height="150">
                                     </span>
                                 </a>
                             </div>

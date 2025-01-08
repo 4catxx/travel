@@ -35,6 +35,8 @@
                                     <!-- Details Section -->
                                     <div class="col-xl-7">
                                         <div class="ps-xl-4 mt-4 mt-xl-0">
+                                            
+                                            <!-- Title and Price -->
                                             <h1 class="font-size-24 fw-bold mb-3 text-primary">
                                                 <?= esc($wisata['nama_wisata']) ?>
                                             </h1>
@@ -48,29 +50,53 @@
 
                                             <!-- Detail Paket -->
                                             <h4 class="font-size-18 mb-3">Detail Paket</h4>
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <i class="fas fa-clock text-primary me-2"></i>
-                                                    Durasi: <b><?= esc($wisata['waktu_perjalanan']) ?> Hari</b>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-map-marker-alt text-primary me-2"></i>
-                                                    Rute: <b><?= esc($wisata['rute_perjalanan']) ?></b>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-user-friends text-primary me-2"></i>
-                                                    Minimum peserta: <b><?= esc($wisata['minimum_orang']) ?> orang</b>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-check text-primary me-2"></i>
-                                                    Harga termasuk transportasi lokal & penginapan
-                                                </li>
-                                            </ul>
+                                        <ul class="list-unstyled">
+                                            <li class="mb-3">
+                                                <i class="fas fa-clock text-primary me-2"></i>
+                                                Durasi: <b><?= esc($wisata['waktu_perjalanan']) ?> Hari</b>
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fas fa-user-friends text-primary me-2"></i>
+                                                Minimum peserta: <b><?= esc($wisata['minimum_orang']) ?> orang</b>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-check text-primary me-2"></i>
+                                                Harga termasuk transportasi lokal & penginapan
+                                            </li>
+                                        </ul>
+                                        <hr>
+
+                                        <h4 class="font-size-18 mb-3">Rute Perjalanan</h4>
+                                        <div class="card-body">
+                                            <ol class="activity-feed">
+                                                <?php if (!empty($rencana_perjalanan)): ?>
+                                                    <?php foreach ($rencana_perjalanan as $rencana): ?>
+                                                        <li class="feed-item">
+                                                            <div class="feed-item-list">
+                                                                <span class="date">Hari <?= esc($rencana['hari']) ?></span>
+                                                                <span class="activity-text">
+                                                                    <?= esc($rencana['kegiatan']) ?>
+                                                                    <span class="text-muted">
+                                                                        (<?= substr(esc($rencana['waktu']), 0, 5) ?>)
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <li class="feed-item">
+                                                        <div class="feed-item-list">
+                                                            <span class="activity-text text-muted">Rute perjalanan belum tersedia.</span>
+                                                        </div>
+                                                    </li>
+                                                <?php endif; ?>
+                                            </ol>
+                                        </div>
                                             <hr>
                                             <div class="mt-4 d-flex gap-3">
                                             <a href="<?= site_url('checkout/' . esc($wisata['id_wisata'])) ?>" class="btn btn-primary btn-lg rounded-pill px-4">
-    <i class="fas fa-shopping-cart me-2"></i> Pesan Sekarang
-</a>
+                                                <i class="fas fa-shopping-cart me-2"></i> Pesan Sekarang
+                                            </a>
 
 
                                                 <button class="btn btn-outline-secondary btn-lg rounded-pill px-4"><i class="fas fa-envelope me-2"></i>Hubungi Kami</button>
@@ -94,10 +120,7 @@
 </div>
 
 <?= $this->include('partials/right-sidebar') ?>
-
 <?= $this->include('partials/vendor-scripts') ?>
-
-<script src="<?= base_url('/assets/js/app.js'); ?>"></script>
-
+<script src="t/assets/js/app.js"></script>
 </body>
 </html>

@@ -21,7 +21,6 @@ class WisataModel extends Model
         'minimum_orang',
         'harga',
         'waktu_perjalanan',
-        'rute_perjalanan',
         'gambar',
         'status',
         'created_by',
