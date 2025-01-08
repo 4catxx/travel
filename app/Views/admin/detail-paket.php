@@ -9,12 +9,10 @@
 
 <div id="layout-wrapper">
     <?= $this->include('partials/menu') ?>
-
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
                 <?= $page_title ?>
-
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card border-0 shadow-lg">
