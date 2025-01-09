@@ -4,7 +4,8 @@
 
     <?= $title_meta ?>
 
-    <link href="<?= base_url('/assets/libs/chartist/chartist.min.css'); ?>" rel="stylesheet">
+    <link href="assets/libs/chartist/chartist.min.css" rel="stylesheet">
+
     <?= $this->include('partials/head-css') ?>
 
 </head>
@@ -24,68 +25,86 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                <!-- start page title -->
-                 
+                <!-- Start page title -->
                 <div class="page-title-box">
                     <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <h1 class="page-title text-primary fw-bold" style="font-size: 2rem; display: flex; align-items: center;">
-                                <i class="mdi mdi-hand-wave text-warning me-2" style="font-size: 2.5rem;"></i> Halo, <?= esc($nama) ?>!
-                            </h1>
-                            <p class="lead text-muted" style="font-size: 1rem; margin-top: 10px;">
-                                Selamat Datang di <span class="text-primary fw-semibold">Klas-A Tour and Travel</span>. 
-                                Kami siap membantu Anda merencanakan perjalanan terbaik!
-                            </p>
+                        <div class="col-md-12">
+                            <h6 class="page-title text-center">FORMULIR PEKERJAAN</h6>
                         </div>
                     </div>
                 </div>
+                <!-- End page title -->
 
-                <!-- Content Cards -->
+                <!-- Form Section -->
                 <div class="row">
-                    <div class="col-xl-4 col-md-6">
-                        <div class="card mini-stat bg-primary text-white">
+                    <div class="col-12">
+                        <div class="card">
                             <div class="card-body">
-                                <div class="mb-4">
-                                    <div class="float-start mini-stat-img me-4">
-                                        <img src="assets/images/services-icon/revenue.png" alt="">
+
+                                <h4 class="card-title">Formulir Pekerjaan</h4>
+                                <form action="#" method="post">
+                                    <!-- Tanggal -->
+                                    <div class="row mb-3">
+                                        <label for="tanggal" class="col-sm-2 col-form-label">Tanggal</label>
+                                        <div class="col-sm-10">
+                                            <input type="date" class="form-control" id="tanggal" name="tanggal">
+                                        </div>
                                     </div>
-                                    <h5 class="font-size-16 text-uppercase mt-0 text-white-50">Total</h5>
-                                    <h5 class="font-size-16 text-uppercase mt-0 text-white-50">Pendapatan</h5>
-                                    <h4 class="fw-medium font-size-24">52,368 <i class="mdi mdi-arrow-down text-danger ms-2"></i><i class="mdi mdi-arrow-up text-success ms-2"></i></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6">
-                        <div class="card mini-stat bg-primary text-white">
-                            <div class="card-body">
-                                <div class="mb-4">
-                                    <div class="float-start mini-stat-img me-4">
-                                        <img src="assets/images/services-icon/booking.png" alt="">
+
+                                    <!-- Laporan Pekerjaan -->
+                                    <div class="row mb-3">
+                                        <label for="laporan" class="col-sm-2 col-form-label">Laporan Pekerjaan</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="laporan" name="laporan" placeholder="Masukkan laporan pekerjaan">
+                                        </div>
                                     </div>
-                                    <h5 class="font-size-16 text-uppercase mt-0 text-white-50">Total</h5>
-                                    <h5 class="font-size-16 text-uppercase mt-0 text-white-50">Booking</h5>
-                                    <h4 class="fw-medium font-size-24">52,368 <i class="mdi mdi-arrow-down text-danger ms-2"></i><i class="mdi mdi-arrow-up text-success ms-2"></i></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6">
-                        <div class="card mini-stat bg-primary text-white">
-                            <div class="card-body">
-                                <div class="mb-4">
-                                    <div class="float-start mini-stat-img me-4">
-                                        <img src="assets/images/services-icon/travel.png" alt="">
+
+                                    <!-- Keterangan Kerusakan -->
+                                    <div class="row mb-3">
+                                        <label for="kerusakan" class="col-sm-2 col-form-label">Keterangan Kerusakan</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" id="kerusakan" name="kerusakan" rows="3" placeholder="Jelaskan kerusakan yang terjadi"></textarea>
+                                        </div>
                                     </div>
-                                    <h5 class="font-size-16 text-uppercase mt-0 text-white-50">Total</h5>
-                                    <h5 class="font-size-16 text-uppercase mt-0 text-white-50">Paket Wisata</h5>
-                                    <h4 class="fw-medium font-size-24">52,368 <i class="mdi mdi-arrow-down text-danger ms-2"></i><i class="mdi mdi-arrow-up text-success ms-2"></i></h4>
-                                </div>
+
+                                    <!-- Tindakan -->
+                                    <div class="row mb-3">
+                                        <label for="tindakan" class="col-sm-2 col-form-label">Tindakan</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-select" id="tindakan" name="tindakan">
+                                                <option selected disabled>Pilih tindakan</option>
+                                                <option value="Perbaikan">Perbaikan</option>
+                                                <option value="Penggantian">Penggantian</option>
+                                                <option value="Pemeriksaan">Pemeriksaan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Vendor -->
+                                    <div class="row mb-3">
+                                        <label for="vendor" class="col-sm-2 col-form-label">Vendor</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-select" id="vendor" name="vendor">
+                                                <option selected disabled>Pilih vendor</option>
+                                                <option value="Internal">Internal</option>
+                                                <option value="Eksternal">Eksternal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="row">
+                                        <div class="col-sm-10 offset-sm-2">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- end row -->
+                <!-- End Form Section -->
 
             </div> <!-- container-fluid -->
         </div>
@@ -105,13 +124,15 @@
 
 
 <!-- Peity chart-->
-<script src="<?= base_url('/assets/libs/peity/jquery.peity.min.js'); ?>"></script>
+<script src="assets/libs/peity/jquery.peity.min.js"></script>
 
 <!-- Plugin Js-->
-<script src="<?= base_url('/assets/libs/chartist/chartist.min.js'); ?>"></script>
-<script src="<?= base_url('/assets/libs/chartist-plugin-tooltips/chartist-plugin-tooltip.min.js'); ?>"></script>
-<script src="<?= base_url('/assets/js/pages/dashboard.init.js'); ?>"></script>
-<script src="<?= base_url('/assets/js/app.js'); ?>"></script>
+<script src="assets/libs/chartist/chartist.min.js"></script>
+<script src="assets/libs/chartist-plugin-tooltips/chartist-plugin-tooltip.min.js"></script>
+
+<script src="assets/js/pages/dashboard.init.js"></script>
+
+<script src="assets/js/app.js"></script>
 
 </body>
 
